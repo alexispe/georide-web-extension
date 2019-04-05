@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "GeoRide",
+    "description": "Le nom de l'extension."
+  },
+  "appDescription": {
+    "message": "Le moyen le plus simple pour contrôler votre boîtier GeoRide directement depuis votre ordinateur.",
+    "description": "La description de l'extension."
+  }
+}

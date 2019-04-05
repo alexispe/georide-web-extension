@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "GeoRide",
+    "description": "The name of the extension."
+  },
+  "appDescription": {
+    "message": "The easiest way to control your GeoRide box directly from your computer.",
+    "description": "The description of the extension."
+  }
+}

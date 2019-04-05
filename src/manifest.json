@@ -1,0 +1,30 @@
+{
+  "name": "__MSG_appName__",
+  "author": "Abishot",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "__MSG_appDescription__",
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "128": "assets/icons/icon-128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "scripts": [
+      "background/background.js",
+      "hotreload/hotreload.js"
+    ],
+    "persistent": true
+  },
+  "permissions": ["storage","notifications","background"],
+  "browser_action": {
+    "default_icon": {
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png",
+      "48": "assets/icons/icon-48.png",
+      "128": "assets/icons/icon-128.png"
+    },
+    "default_title": "Extension Boilerplate",
+    "default_popup": "popup/index.html"
+  }
+}
