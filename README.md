@@ -1,3 +1,13 @@
+<p align="center">
+  <sub>
+    <img  src="https://raw.githubusercontent.com/alexispe/georide-web-extension/master/src/assets/icons/icon-48.png"
+      height="48"
+      width="48">
+  </sub>
+</p>
+
+***
+
 # GeoRide Web Extension
 
 Le moyen le plus simple pour contrôler votre boîtier GeoRide directement depuis votre ordinateur.
@@ -39,15 +49,7 @@ npm run watch-dev
 
 Grâce à `watch-dev` vous allez pouvoir développer et voir vos modifications en direct.
 
-#### Normalisation
-
 Suivez les instructions de eslint dans la console lors de vos développements pour proposer un code propre.
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
 ## Contributeurs
 
