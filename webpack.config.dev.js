@@ -21,7 +21,10 @@ const generalConfig = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['eslint-loader'],
+        loader: 'eslint-loader',
+        options: {
+          fix: true
+        }
       },
       {
         test: /\.scss$/,

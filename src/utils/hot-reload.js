@@ -1,17 +1,15 @@
 /* global chrome */
 
-const filesInDirectory = dir => new Promise(resolve =>
-  dir.createReader().readEntries(entries =>
-    Promise.all(entries.filter(e => e.name[0] !== '.').map(e => (
-      e.isDirectory
-        ? filesInDirectory(e)
-        : new Promise(resolvePromise => e.file(resolvePromise)))))
-      .then(files => [].concat(...files))
-      .then(resolve)));
+const filesInDirectory = dir => new Promise(resolve => dir.createReader().readEntries(entries => Promise.all(entries.filter(e => e.name[0] !== '.').map(e => (
+  e.isDirectory
+    ? filesInDirectory(e)
+    : new Promise(resolvePromise => e.file(resolvePromise)))))
+  .then(files => [].concat(...files))
+  .then(resolve)));
 
-const timestampForFilesInDirectory = dir =>
-  filesInDirectory(dir).then(files =>
-    files.map(f => f.name + f.lastModifiedDate).join());
+const timestampForFilesInDirectory = dir => filesInDirectory(dir).then(
+  files => files.map(f => f.name + f.lastModifiedDate).join(),
+);
 
 const reload = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {

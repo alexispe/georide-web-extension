@@ -1,19 +1,19 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.0.1",
+  "version": "1.0.5",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
     "16": "assets/icons/icon-16.png",
     "128": "assets/icons/icon-128.png"
   },
-  "default_locale": "en",
+  "default_locale": "fr",
   "background": {
     "scripts": [
       "background/background.js"
     ]
   },
-  "permissions": ["storage","notifications","background"],
+  "permissions": ["storage","notifications"],
   "browser_action": {
     "default_icon": {
       "16": "assets/icons/icon-16.png",
@@ -22,10 +22,5 @@
       "128": "assets/icons/icon-128.png"
     },
     "default_popup": "popup/index.html"
-  },
-  "applications": {
-    "gecko": {
-      "id": "borderify@example.com"
-    }
   }
 }

@@ -12,8 +12,8 @@ export default class Popup extends React.Component {
       trackers: [],
       email: '',
       password: '',
-      loading:false,
-      loadingView:false,
+      loading: false,
+      loadingView: true,
     };
     this.gapi = {};
 
@@ -24,105 +24,102 @@ export default class Popup extends React.Component {
   }
 
   async componentDidMount() {
-    this.gapi = window.chrome ? await chrome.extension.getBackgroundPage() : await browser.runtime.getBackgroundPage();
+    this.gapi = chrome.extension.getBackgroundPage();
     this.gapi = this.gapi.gapi;
-
-    if(this.gapi.token) this.setState({loadingView: true});
 
     this.getTrackers();
 
     this.gapi.addSocketOnReady(() => {
-      this.gapi.socketOnLockedPosition = async () => {
-        await this.getTrackers();
-      };
-      this.gapi.socketOnAlarm = this.getTrackers;
-      this.gapi.socketOnDevice = async () => {
-        await this.getTrackers();
-      };
-      this.gapi.socketOnPosition = async () => {
-        await this.getTrackers();
-      };
-      this.gapi.socketOnRefreshTrackersInstruction = this.getTrackers;
+      this.gapi.socket.on('lockedPosition', () => { this.getTrackers(); });
+      this.gapi.socket.on('alarm', () => { this.getTrackers(); });
+      this.gapi.socket.on('device', () => { this.getTrackers(); });
+      this.gapi.socket.on('position', () => { this.getTrackers(); });
+      this.gapi.socket.on('refreshTrackersInstruction', () => { this.getTrackers(); });
     }, 'popup');
   }
 
+  async getTrackers() {
+    this.setState({ loading: true });
+    const trackers = await this.gapi.getTrackers();
+    this.setState({ trackers, loading: false, loadingView: false });
+  }
+
+
   handleChange(event) {
-    const target = event.target;
+    const { target } = event;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
+    const { name } = target;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    this.setState({loadingView:true});
-    this.gapi.login(this.state.email,this.state.password).then(function(error) {
-      if(error) {
-        this.setState({loadingView:false});
+    this.setState({ loadingView: true });
+    const { email, password } = this.state;
+    this.gapi.login(email, password).then((error) => {
+      if (error !== true) {
+        this.setState({ loadingView: false });
         return alert(error);
       }
-      this.getTrackers();
-    }.bind(this));
+      return this.getTrackers();
+    });
   }
 
-  async handleClickToggleTracker(trackerId) {
-    let trackers = await this.gapi.toggleTrackerLock(trackerId);
-  }
-
-  async getTrackers() {
-    this.setState({loading:true})
-    let trackers = await this.gapi.getTrackers();
-    this.setState({trackers,loading:false,loadingView:false});
+  handleClickToggleTracker(trackerId) {
+    this.gapi.toggleTrackerLock(trackerId);
   }
 
   render() {
+    const { loadingView, loading, trackers } = this.state;
 
-    let trackersElements = [];
+    if (!this.gapi) return <div className="loading">Erreur, veuillez redémarer l&#39;extension.</div>;
+    if (loadingView) return <div className="loading">⌛</div>;
+    if (this.gapi.token) {
+      return (
+        <List>
+          { trackers.map(t => (
+            <List.Item>
+              <List.Icon onClick={
+                  () => (t.canLock && t.canUnlock) && this.handleClickToggleTracker(t.trackerId)}
+              >
+                { loading ? <Loader /> : (t.isLocked ? '🔒' : '🔓') }
+              </List.Icon>
 
-    this.state.trackers.map((t) => console.log(t))
+              <List.Content>
+                <List.Title>{ t.trackerName }</List.Title>
+                <List.Meta>
+                  { t.odometer && `${(t.odometer / 1000).toLocaleString()}km -\xa0` }
 
-    if(!this.gapi) return <div className="loading">Erreur, veuillez redémarer l'extension.</div>;
-    if(this.state.loadingView) return <div className="loading">⌛</div>;
-    if(this.gapi.token) return (
-      <List>
-        { this.state.trackers.map((t) => (
-          <List.Item>
-            <List.Icon onClick={() => (t.canLock && t.canUnlock) && this.handleClickToggleTracker(t.trackerId)}>
-              { this.state.loading ? <Loader/> : t.isLocked ? '🔒' : '🔓' }
-            </List.Icon>
+                  { (t.moving && t.speed) && `${(t.speed * 1.852).toLocaleString()}hm/h -\xa0` }
 
-            <List.Content>
-              <List.Title>{ t.trackerName }</List.Title>
-              <List.Meta>
-                { t.odometer && `${(t.odometer/1000).toLocaleString()}km - ` }
-
-                { (t.moving && t.speed) && `${(t.speed*1.852).toLocaleString()}hm/h - ` }
-
-                { t.canSeePosition &&
+                  { t.canSeePosition
+                  && (
                   <a href={`https://www.google.com/maps/search/?api=1&query=${t.latitude},${t.longitude}`} target="blank">
                     Localiser
                   </a>
+                  )
                 }
-              </List.Meta>
-            </List.Content>
-          </List.Item>
-        ))}
-      </List>
-    );
-    else return (
+                </List.Meta>
+              </List.Content>
+            </List.Item>
+          ))}
+        </List>
+      );
+    }
+    const { email, password } = this.state;
+    return (
       <div className="container">
         <h1>Connexion à GeoRide</h1>
         <form onSubmit={this.handleSubmit}>
-          <input placeholder="Email" type="email" name="email" value={this.state.email} onChange={this.handleChange}/>
-          <input placeholder="Mot de passe" type="password" name="password" value={this.state.password} onChange={this.handleChange}/>
-          <input type="submit" value="Connexion"/>
+          <input placeholder="Email" type="email" name="email" value={email} onChange={this.handleChange} />
+          <input placeholder="Mot de passe" type="password" name="password" value={password} onChange={this.handleChange} />
+          <input type="submit" value="Connexion" />
         </form>
       </div>
     );
-
   }
 }

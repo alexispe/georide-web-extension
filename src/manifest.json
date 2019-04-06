@@ -1,14 +1,14 @@
 {
   "name": "__MSG_appName__",
   "author": "Abishot",
-  "version": "0.0.1",
+  "version": "1.0.5",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
     "16": "assets/icons/icon-16.png",
     "128": "assets/icons/icon-128.png"
   },
-  "default_locale": "en",
+  "default_locale": "fr",
   "background": {
     "scripts": [
       "background/background.js",
@@ -24,7 +24,6 @@
       "48": "assets/icons/icon-48.png",
       "128": "assets/icons/icon-128.png"
     },
-    "default_title": "Extension Boilerplate",
     "default_popup": "popup/index.html"
   }
 }
