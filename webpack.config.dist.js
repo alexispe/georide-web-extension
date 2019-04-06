@@ -49,7 +49,7 @@ module.exports = [
     output: getOutput('chrome', config.tempDirectory),
     entry: getEntry(config.chromePath),
     plugins: [
-      new CleanWebpackPlugin(['dist', 'temp']),
+      new CleanWebpackPlugin(),
       new UglifyJsPlugin(),
       ...getHTMLPlugins('chrome', config.tempDirectory, config.chromePath),
       ...getCopyPlugins('chrome', config.tempDirectory, config.chromePath),
@@ -61,7 +61,7 @@ module.exports = [
     output: getOutput('opera', config.tempDirectory),
     entry: getEntry(config.operaPath),
     plugins: [
-      new CleanWebpackPlugin(['dist', 'temp']),
+      new CleanWebpackPlugin(),
       new UglifyJsPlugin(),
       ...getHTMLPlugins('opera', config.tempDirectory, config.operaPath),
       ...getCopyPlugins('opera', config.tempDirectory, config.operaPath),
@@ -73,7 +73,7 @@ module.exports = [
     entry: getEntry(config.firefoxPath),
     output: getOutput('firefox', config.tempDirectory),
     plugins: [
-      new CleanWebpackPlugin(['dist', 'temp']),
+      new CleanWebpackPlugin(),
       new UglifyJsPlugin(),
       ...getHTMLPlugins('firefox', config.tempDirectory, config.firefoxPath),
       ...getFirefoxCopyPlugins('firefox', config.tempDirectory, config.firefoxPath),
