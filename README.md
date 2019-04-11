@@ -17,7 +17,7 @@ Le moyen le plus simple pour contrôler votre boîtier GeoRide directement depui
 
 ## Contribuer
 
-Ce repo est destiné aux développeurs souhaitant participer au développement de l'extension. Si vous êtes utilisateur, veuillez utilisez l'un des liens ci-dessus pour installer l'extension.
+Ce repo est destiné aux développeurs souhaitant participer au développement de l'extension. Si vous êtes utilisateur, veuillez utiliser l'un des liens ci-dessus pour installer l'extension.
 
 ### Prérequis
 
