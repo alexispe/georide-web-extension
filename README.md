@@ -51,6 +51,6 @@ Suivez les instructions de eslint dans la console lors de vos développements po
 
 ## Contributeurs
 
-Les auteurs des plus grosses corrections et améliorations apparaitront ici.
+Les auteurs des plus grosses corrections et améliorations apparaîtront ici.
 
 * **Vous** - *Votre amélioration* - [Votre GitHub](#)
