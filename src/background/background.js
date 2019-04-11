@@ -13,19 +13,48 @@ import GeorideAPI from './georide.api';
       console.log('notification locked pos');
       chrome.notifications.create({
         type: 'basic',
-        iconUrl: chrome.extension.getURL('assets/icons/icon-48.png'),
+        iconUrl: chrome.extension.getURL('../assets/icons/icon-48.png'),
         title: `${d.trackerName} ${d.isLocked ? 'Verrouillée' : 'Déverrouillée'}`,
         message: `${d.trackerName} ${d.isLocked ? 'Verrouillée' : 'Déverrouillée'}`,
       });
     });
 
     window.gapi.socket.on('alarm', (d) => {
-      chrome.notifications.create({
-        type: 'basic',
-        iconUrl: chrome.extension.getURL('assets/icons/icon-48.png'),
-        title: `Vibration détectée sur ${d.trackerName}`,
-        message: `Vibration détectée sur ${d.trackerName}`,
-      });
+      let message;
+
+      switch (d.name) {
+        case 'vibration':
+          message = `Vibration détectée sur ${d.trackerName}`;
+          break;
+        case 'exitZone':
+          message = `Sortie de zone pour ${d.trackerName}`;
+          break;
+        case 'crash':
+          message = `Chute détectée sur ${d.trackerName}`;
+          break;
+        case 'crashParking':
+          message = `Chute parking détectée sur ${d.trackerName}`;
+          break;
+        case 'deviceOffline':
+          message = `${d.trackerName} déconnectée du réseau`;
+          break;
+        case 'deviceOnline':
+          message = `${d.trackerName} reconnectée au réseau`;
+          break;
+        case 'powerCut':
+          message = `Alimentation coupée sur ${d.trackerName}`;
+          break;
+        default:
+          console.error(`Not found ${d.name}`);
+      }
+
+      if (message) {
+        chrome.notifications.create({
+          type: 'basic',
+          iconUrl: chrome.extension.getURL('../assets/icons/icon-48.png'),
+          title: message,
+        });
+      }
     });
   }, 'background');
 })();
