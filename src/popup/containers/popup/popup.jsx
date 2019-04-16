@@ -86,7 +86,7 @@ export default class Popup extends React.Component {
               <List.Icon onClick={
                   () => (t.canLock && t.canUnlock) && this.handleClickToggleTracker(t.trackerId)}
               >
-                { loading ? <Loader /> : (t.status ==  'offline' ? '📶' : (t.isLocked ? '🔒' : '🔓')) }
+                { loading ? <Loader /> : (t.status === 'offline' ? '📶' : (t.isLocked ? '🔒' : '🔓')) }
               </List.Icon>
 
               <List.Content>
