@@ -1,7 +1,7 @@
 {
   "name": "__MSG_appName__",
   "author": "Abishot",
-  "version": "1.0.7.1",
+  "version": "1.0.8",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
