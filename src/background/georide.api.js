@@ -118,7 +118,10 @@ export default class GeorideAPI {
         Authorization: `Bearer ${this.token}`,
       },
     });
-    if (response.status === 401) return [];
+    if (response.status === 401) {
+      this.token = null;
+      return [];
+    }
     this.trackers = await response.json();
     return this.trackers;
   }
