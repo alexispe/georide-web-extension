@@ -1,19 +1,19 @@
 .List {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: stretch;
+  justify-content: center;
 
   .Item {
     display: flex;
     flex-flow: row wrap;
+    flex: 1;
 
-    padding: 0.3rem 0.5rem;
     border-bottom: 1px solid #ddd;
 
     .Icon {
+      text-align: right;
       font-size: 1.2rem;
-      padding: 0.2rem;
-      margin: 0.2rem;
       cursor: pointer;
       box-sizing: content-box;
       text-shadow: 0 1px 2px rgba(0,0,0,0.15);
@@ -22,49 +22,66 @@
       &:hover {
         text-shadow: 0 5px 15px rgba(0,0,0,0.3);
       }
+    } 
+
+    .Speed {
+      margin-top: 5px;
+      color: #ee6b11;
+      font-size: 12px;
     }
-
-    .Content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      margin-left: 0.6rem;
-
-      .Title {
-        flex: 1;
-        display: flex;
-        align-items:flex-end;
-        font-size: 1rem;
-      }
-      .Meta {
-        flex: 1;
-        display: flex;
-        align-items: flex-start;
-        font-size: 0.8rem;
-      }
+    .Odometer {
+      text-align: right;
+      margin-top: 5px;
+      font-size: 12px;
+      color:#707070;
     }
-
+    .Title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .Meta {
+      font-weight: 500;
+      font-size: 16px;
+      color: #707070;
+    }
 
   }
-}
 
-.list .item span {
-  flex: 1;
-}
-.list .item button {
+  .SubItem {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1;
 
-  border: 0;
-  border-radius: 5px;
-  background: none;
-  color: #222;
-}
-.list .item span.meta {
-  flex: 1 100%;
+    &:hover {
+      background: #ddd;
+    }
 
-  font-size: 0.8rem;
-  color: #666;
-}
-.list .item span.meta a {
-  color: #666;
+    .Title {
+      font-size: 0.8rem;
+    }
+    .Meta {
+      font-size: 0.8rem;
+    }
+  }
+
+  .Content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+    .Row {
+      padding: 15px;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: start;
+
+      .Col {
+        flex: 1;
+
+        
+      }
+    }
+  }
 }

@@ -1,9 +1,13 @@
+.bg-grey {
+  background: #f8f8f8;
+}
 body {
   width: 300px;
-  font-family: Helvetica, serif;
-  color: #222;
+  font-family: 'Oxygen', sans-serif;
+  color: #555555;
   padding: 0;
   margin: 0;
+  overflow-x: hidden;
 }
 .container {
   padding: 1rem;
@@ -36,4 +40,11 @@ input[type='submit'] {
   border-radius: 5px;
   background-color: #ee6b11;
   color: #fff;
+}
+
+.icon-unlock {
+  filter: invert(61%) sepia(26%) saturate(1012%) hue-rotate(40deg) brightness(104%) contrast(81%);
+}
+.icon-lock {
+  filter: invert(40%) sepia(100%) saturate(612%) hue-rotate(349deg) brightness(103%) contrast(98%);
 }

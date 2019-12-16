@@ -10,6 +10,7 @@ export default class Popup extends React.Component {
     super();
     this.state = {
       trackers: [],
+      events: [],
       email: '',
       password: '',
       loading: false,
@@ -73,8 +74,17 @@ export default class Popup extends React.Component {
     this.gapi.toggleTrackerLock(trackerId);
   }
 
+  async handleClickToggleTrackerEvents(trackerId) {
+    let events = await this.gapi.getTrackerEvents(trackerId);
+    events = events.events.rows;
+
+    this.setState({ events });
+  }
+
   render() {
-    const { loadingView, loading, trackers } = this.state;
+    const {
+      loadingView, loading, trackers, events,
+    } = this.state;
 
     if (!this.gapi) return <div className="loading">Erreur, veuillez redémarer l&#39;extension.</div>;
     if (loadingView) return <div className="loading">⌛</div>;
@@ -82,31 +92,80 @@ export default class Popup extends React.Component {
       return (
         <List>
           { trackers.map(t => (
-            <List.Item>
-              <List.Icon onClick={
-                  () => (t.canLock && t.canUnlock) && this.handleClickToggleTracker(t.trackerId)}
-              >
-                { loading ? <Loader /> : (t.status === 'offline' ? '📶' : (t.isLocked ? '🔒' : '🔓')) }
-              </List.Icon>
-
+            <List.Item key={`track-item-${t.trackerId}`}>
               <List.Content>
-                <List.Title>{ t.trackerName }</List.Title>
-                <List.Meta>
-                  { t.odometer && `${(t.odometer / 1000).toLocaleString()}km -\xa0` }
 
-                  { (t.moving && t.speed) && `${(t.speed * 1.852).toLocaleString()}hm/h -\xa0` }
+                <List.Row className="bg-grey">
+                  <List.Col>
+                    <List.Title>{ t.trackerName }</List.Title>
+                    <List.Speed>
+                      { ((t.moving && t.speed) && `${(t.speed * 1.852).toLocaleString()}hm/h`)
+                        || 'À l\'arrêt' }
+                    </List.Speed>
+                  </List.Col>
+                  <List.Col>
+                    <List.Icon onClick={
+                      () => (t.canLock && t.canUnlock) && this.handleClickToggleTracker(t.trackerId)}
+                    >
+                      { loading ? <Loader /> : (t.status === 'offline' ? '📶' : (t.isLocked
+                        ? <img src="https://app.georide.fr/static/images/icons/lock.svg" className="icon-lock" width="18px" alt="lock" />
+                        : <img src="https://app.georide.fr/static/images/icons/unlock.svg" className="icon-unlock" width="18px" alt="unlock" />)) }
+                    </List.Icon>
+                    <List.Odometer>
+                      { t.odometer && `${(t.odometer / 1000).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} km` }
+                    </List.Odometer>
+                  </List.Col>
+                </List.Row>
 
-                  { t.canSeePosition
+
+                { t.canSeePosition
                   && (
-                  <a href={`https://www.google.com/maps/search/?api=1&query=${t.latitude},${t.longitude}`} target="blank">
-                    Localiser
-                  </a>
+                    <List.Row>
+                      <List.Col>
+                        <List.Meta>
+                          <span
+                            onClick={() => {
+                              window.open(`https://www.google.com/maps/search/?api=1&query=${t.latitude},${t.longitude}`, '_blank');
+                            }}
+                          >
+                          Localiser
+                          </span>
+                        </List.Meta>
+                      </List.Col>
+                    </List.Row>
                   )
                 }
-                </List.Meta>
+
+                <List.Row>
+                  <List.Col>
+                    <List.Meta>
+                      <span onClick={() => this.handleClickToggleTrackerEvents(t.trackerId)}>
+                        Mes derniers évènements
+                      </span>
+                    </List.Meta>
+                  </List.Col>
+                </List.Row>
+
               </List.Content>
             </List.Item>
           ))}
+          {
+            events.map(e => (
+              <List.SubItem>
+                <List.Content>
+                  <List.Row>
+                    <List.Col>
+                      <List.Title>{e.name}</List.Title>
+                    </List.Col>
+
+                    <List.Col>
+                      <List.Meta>{new Date(e.createdAt).toLocaleString('fr-FR')}</List.Meta>
+                    </List.Col>
+                  </List.Row>
+                </List.Content>
+              </List.SubItem>
+            ))
+          }
         </List>
       );
     }

@@ -120,7 +120,19 @@ export default class GeorideAPI {
     });
     if (response.status === 401) return [];
     this.trackers = await response.json();
+    console.log('trackers:', this.trackers);
     return this.trackers;
+  }
+
+  async getTrackerEvents(trackerId) {
+    const response = await fetch(`${GEORIDE_URL}tracker/${trackerId}/events/?results=30&page=1`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+    });
+    if (response.status === 401) return [];
+    return response.json();
   }
 
   async toggleTrackerLock(trackerId) {

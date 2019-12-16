@@ -48,9 +48,3 @@ npm run watch-dev
 Grâce à `watch-dev` vous allez pouvoir développer et voir vos modifications en direct.
 
 Suivez les instructions de eslint dans la console lors de vos développements pour proposer un code propre.
-
-## Contributeurs
-
-Les auteurs des plus grosses corrections et améliorations apparaîtront ici.
-
-* **Vous** - *Votre amélioration* - [Votre GitHub](#)

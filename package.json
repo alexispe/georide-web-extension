@@ -1,6 +1,6 @@
 {
   "name": "georide-web-extension",
-  "version": "1.0.7",
+  "version": "2.0.0",
   "description": "Le moyen le plus simple pour contrôler votre boîtier GeoRide directement depuis votre ordinateur.",
   "main": "webpack.config.js",
   "scripts": {
@@ -53,6 +53,7 @@
     "@babel/eslint-plugin-development": "^1.0.1",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0"
+    "eslint": "^5.16.0",
+    "file-loader": "^5.0.2"
   }
 }

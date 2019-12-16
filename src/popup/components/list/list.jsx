@@ -5,7 +5,17 @@ import './list.scss';
 export default class List extends React.Component {
   static Item = props => <div className="Item">{props.children}</div>;
 
+  static Row = props => <div className={`Row ${props.className}`}>{props.children}</div>;
+
+  static Col = props => <div className={`Col ${props.className}`}>{props.children}</div>;
+
+  static SubItem = props => <div className="SubItem">{props.children}</div>;
+
   static Content = props => <div className="Content">{props.children}</div>;
+
+  static Speed = props => <div className="Speed">{props.children}</div>;
+
+  static Odometer = props => <div className="Odometer">{props.children}</div>;
 
   static Title = props => <div className="Title">{props.children}</div>;
 
