@@ -13,8 +13,7 @@ export default class LockRow extends React.Component {
 
   async handleClickToggleTrackerEvents(trackerId) {
     const { gapi } = this.props;
-    const { getTrackerEvents } = gapi;
-    let events = await getTrackerEvents(trackerId);
+    let events = await gapi.getTrackerEvents(trackerId); // eslint-disable-line
     events = events.events.rows;
     let { show } = this.state;
     show = !show;
@@ -25,6 +24,9 @@ export default class LockRow extends React.Component {
   render() {
     const { tracker } = this.props;
     const { events, show } = this.state;
+    const eventsList = {
+      lock: 'Vérrouillé', unlock: 'Déverrouillé', deviceOffline: 'Hors ligne', deviceOnline: 'En ligne', exitZone: 'Sortie de zone',
+    };
 
     if (!tracker.canSeeStatistics) return null;
 
@@ -40,11 +42,11 @@ export default class LockRow extends React.Component {
           </List.Col>
         </List.Row>
         { show && events.map(e => (
-          <List.SubItem>
+          <List.SubItem key={e.createdAt}>
             <List.Content>
               <List.Row>
                 <List.Col className="Full">
-                  <List.Title>{e.name}</List.Title>
+                  <List.Title>{eventsList[e.name] ? eventsList[e.name] : e.name}</List.Title>
                 </List.Col>
 
                 <List.Col>

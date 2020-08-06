@@ -9,8 +9,6 @@ import GeorideAPI from './georide.api';
     console.log('background is ready to notify');
 
     window.gapi.socket.on('lockedPosition', (d) => {
-      console.log(window);
-      console.log('notification locked pos');
       chrome.notifications.create({
         type: 'basic',
         iconUrl: chrome.extension.getURL('../assets/icons/icon-48.png'),

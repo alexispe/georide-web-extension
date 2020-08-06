@@ -1,0 +1,18 @@
+.Contact {
+    .Row {
+        padding: 5px 15px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .Link {
+            font-size: 11px;
+            color: #555555;
+            text-decoration: none;
+
+            &:hover {
+                color: #ee6b11;
+                text-decoration: underline;
+            }
+        }
+    }
+}

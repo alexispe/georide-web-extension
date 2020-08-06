@@ -128,6 +128,7 @@ export default class GeorideAPI {
   }
 
   async getTrackerEvents(trackerId) {
+    console.log('georide.api.js', this);
     const response = await fetch(`${GEORIDE_URL}tracker/${trackerId}/events/?results=30&page=1`, {
       method: 'GET',
       headers: {

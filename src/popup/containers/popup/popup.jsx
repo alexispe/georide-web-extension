@@ -8,6 +8,7 @@ import LockRow from './partials/lockRow';
 import LocateRow from './partials/locateRow';
 import EventRow from './partials/eventRow';
 import StatsRow from './partials/statsRow';
+import ContactRow from './partials/contactRow';
 
 export default class Popup extends React.Component {
   constructor() {
@@ -102,10 +103,10 @@ export default class Popup extends React.Component {
 
     this.setState({ loadingView: true });
     const { email, password } = this.state;
-    this.gapi.login(email, password).then((error) => {
-      if (error !== true) {
+    this.gapi.login(email, password).then((errorMessage) => {
+      if (errorMessage !== true) {
         this.setState({ loadingView: false });
-        return alert(error);
+        return alert(errorMessage);
       }
       return this.getTrackers();
     });
@@ -157,6 +158,7 @@ export default class Popup extends React.Component {
                 <LocateRow tracker={t} />
                 <EventRow tracker={t} gapi={this.gapi} />
                 <StatsRow tracker={t} />
+                <ContactRow />
 
               </List.Content>
             </List.Item>
