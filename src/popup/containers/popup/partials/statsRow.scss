@@ -1,0 +1,21 @@
+.Stats {
+    .Row {
+        .Col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-size: .8rem;
+            .Icon {
+                height: 1.5rem;
+                margin-right: .2rem;
+                position: relative;
+                top: 3px;
+            }
+            .Value {
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+        }
+    }
+}

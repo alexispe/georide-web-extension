@@ -1,13 +1,21 @@
-.bg-grey {
-  background: #f8f8f8;
+@font-face {
+  font-family: 'Avenir';
+  src: url(/assets/fonts/avenir.otf); 
 }
+
 body {
   width: 300px;
-  font-family: 'Oxygen', sans-serif;
+  font-family: 'Avenir', sans-serif;
   color: #555555;
   padding: 0;
   margin: 0;
   overflow-x: hidden;
+}
+.pointer {
+  cursor: pointer;
+}
+.bg-grey {
+  background: #f8f8f8;
 }
 .container {
   padding: 1rem;
@@ -44,7 +52,13 @@ input[type='submit'] {
 
 .icon-unlock {
   filter: invert(61%) sepia(26%) saturate(1012%) hue-rotate(40deg) brightness(104%) contrast(81%);
+  &.icon-grey {
+    filter: invert(67%) sepia(0%) saturate(2%) hue-rotate(18deg) brightness(96%) contrast(90%);
+  }
 }
 .icon-lock {
   filter: invert(40%) sepia(100%) saturate(612%) hue-rotate(349deg) brightness(103%) contrast(98%);
+  &.icon-grey {
+    filter: invert(67%) sepia(0%) saturate(2%) hue-rotate(18deg) brightness(96%) contrast(90%);
+  }
 }

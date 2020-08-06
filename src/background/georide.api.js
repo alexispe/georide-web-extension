@@ -148,4 +148,14 @@ export default class GeorideAPI {
     const json = await response.json();
     return json.locked;
   }
+
+  async getTrackerTrips(trackerId, from, to) {
+    const response = await fetch(`${GEORIDE_URL}tracker/${trackerId}/trips?from=${from}&to=${to}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+    });
+    return response.json();
+  }
 }

@@ -1,6 +1,6 @@
 {
   "name": "georide-web-extension",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Le moyen le plus simple pour contrôler votre boîtier GeoRide directement depuis votre ordinateur.",
   "main": "webpack.config.js",
   "scripts": {
@@ -44,6 +44,7 @@
     "sass-loader": "^7.1.0",
     "socket.io-client": "^2.2.0",
     "style-loader": "^0.23.1",
+    "tiny-skeleton-loader-react": "^1.1.3",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",

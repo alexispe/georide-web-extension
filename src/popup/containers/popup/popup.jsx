@@ -3,14 +3,17 @@ import './popup.scss';
 
 import Loader from '../../components/loader/loader';
 import List from '../../components/list/list';
-
+import LoaderView from './partials/loader';
+import LockRow from './partials/lockRow';
+import LocateRow from './partials/locateRow';
+import EventRow from './partials/eventRow';
+import StatsRow from './partials/statsRow';
 
 export default class Popup extends React.Component {
   constructor() {
     super();
     this.state = {
       trackers: [],
-      events: [],
       email: '',
       password: '',
       loading: false,
@@ -42,6 +45,44 @@ export default class Popup extends React.Component {
   async getTrackers() {
     this.setState({ loading: true });
     const trackers = await this.gapi.getTrackers();
+
+    trackers.map(async (t, index) => {
+      const tracker = t;
+      const date = new Date();
+      const to = date.toISOString();
+      date.setMonth(date.getMonth() - 1);
+      const from = date.toISOString();
+
+      const trips = await this.gapi.getTrackerTrips(tracker.trackerId, from, to);
+
+      tracker.statistics = {
+        count: 0,
+        distance: 0,
+        duration: 0,
+        averageSpeed: 0,
+        totalAverageSpeed: 0,
+        maxSpeed: 0,
+      };
+
+      await trips.map((trip) => {
+        tracker.statistics.count += 1;
+        tracker.statistics.distance += trip.distance;
+        tracker.statistics.duration += trip.duration;
+        tracker.statistics.totalAverageSpeed += trip.averageSpeed;
+        if (trip.maxSpeed > tracker.statistics.maxSpeed) {
+          tracker.statistics.maxSpeed = trip.maxSpeed;
+        }
+        return trip;
+      });
+      const { totalAverageSpeed, count } = tracker.statistics;
+      tracker.statistics.averageSpeed = totalAverageSpeed / count;
+
+      const { trackers: tempTrackers } = this.state;
+      tempTrackers[index] = tracker;
+      this.setState({ trackers: tempTrackers });
+      return tracker;
+    });
+
     this.setState({ trackers, loading: false, loadingView: false });
   }
 
@@ -74,20 +115,13 @@ export default class Popup extends React.Component {
     this.gapi.toggleTrackerLock(trackerId);
   }
 
-  async handleClickToggleTrackerEvents(trackerId) {
-    let events = await this.gapi.getTrackerEvents(trackerId);
-    events = events.events.rows;
-
-    this.setState({ events });
-  }
-
   render() {
     const {
-      loadingView, loading, trackers, events,
+      loadingView, loading, trackers,
     } = this.state;
 
     if (!this.gapi) return <div className="loading">Erreur, veuillez redémarer l&#39;extension.</div>;
-    if (loadingView) return <div className="loading">⌛</div>;
+    if (loadingView) return <LoaderView />;
     if (this.gapi.token) {
       return (
         <List>
@@ -96,7 +130,7 @@ export default class Popup extends React.Component {
               <List.Content>
 
                 <List.Row className="bg-grey">
-                  <List.Col>
+                  <List.Col className="Full">
                     <List.Title>{ t.trackerName }</List.Title>
                     <List.Speed>
                       { ((t.moving && t.speed) && `${(t.speed * 1.852).toLocaleString()}hm/h`)
@@ -105,7 +139,9 @@ export default class Popup extends React.Component {
                   </List.Col>
                   <List.Col>
                     <List.Icon onClick={
-                      () => (t.canLock && t.canUnlock) && this.handleClickToggleTracker(t.trackerId)}
+                      () => (
+                        (t.canLock && t.canUnlock) && this.handleClickToggleTracker(t.trackerId)
+                      )}
                     >
                       { loading ? <Loader /> : (t.status === 'offline' ? '📶' : (t.isLocked
                         ? <img src="https://app.georide.fr/static/images/icons/lock.svg" className="icon-lock" width="18px" alt="lock" />
@@ -117,55 +153,14 @@ export default class Popup extends React.Component {
                   </List.Col>
                 </List.Row>
 
-
-                { t.canSeePosition
-                  && (
-                    <List.Row>
-                      <List.Col>
-                        <List.Meta>
-                          <span
-                            onClick={() => {
-                              window.open(`https://www.google.com/maps/search/?api=1&query=${t.latitude},${t.longitude}`, '_blank');
-                            }}
-                          >
-                          Localiser
-                          </span>
-                        </List.Meta>
-                      </List.Col>
-                    </List.Row>
-                  )
-                }
-
-                <List.Row>
-                  <List.Col>
-                    <List.Meta>
-                      <span onClick={() => this.handleClickToggleTrackerEvents(t.trackerId)}>
-                        Mes derniers évènements
-                      </span>
-                    </List.Meta>
-                  </List.Col>
-                </List.Row>
+                <LockRow tracker={t} onClick={() => this.handleClickToggleTracker(t.trackerId)} />
+                <LocateRow tracker={t} />
+                <EventRow tracker={t} gapi={this.gapi} />
+                <StatsRow tracker={t} />
 
               </List.Content>
             </List.Item>
           ))}
-          {
-            events.map(e => (
-              <List.SubItem>
-                <List.Content>
-                  <List.Row>
-                    <List.Col>
-                      <List.Title>{e.name}</List.Title>
-                    </List.Col>
-
-                    <List.Col>
-                      <List.Meta>{new Date(e.createdAt).toLocaleString('fr-FR')}</List.Meta>
-                    </List.Col>
-                  </List.Row>
-                </List.Content>
-              </List.SubItem>
-            ))
-          }
         </List>
       );
     }

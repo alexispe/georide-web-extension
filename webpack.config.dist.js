@@ -40,7 +40,7 @@ const generalConfig = {
         ],
       },
       {
-        test: /\.(woff(2)?|ttf|eot|svg|otf)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(woff(2)?|ttf|eot|svg|otf|png|jpe?g|gif)(\?v=\d+\.\d+\.\d+)?$/,
         use: [
           {
             loader: 'file-loader'
